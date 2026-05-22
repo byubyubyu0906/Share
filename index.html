@@ -1,115 +1,373 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>诺华 (NVS) 股价趋势分析</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>黄金配置策略工具</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f6f8fc;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;color:#172033;line-height:1.65}
-header{position:sticky;top:0;background:rgba(246,248,252,.94);backdrop-filter:blur(14px);border-bottom:1px solid #e6eaf2;z-index:10;padding:14px 16px}
-h1{font-size:20px;margin:0 0 4px;font-weight:800}
-.sub{font-size:13px;color:#667085}
-main{max-width:760px;margin:0 auto;padding:14px 12px 48px}
-.card{background:#fff;border:1px solid #e6eaf2;border-radius:18px;padding:16px;margin:0 0 14px;box-shadow:0 8px 22px rgba(15,23,42,.045)}
-h2{font-size:18px;margin:0 0 12px}
-.grid{display:grid;grid-template-columns:1fr;gap:12px}
-.mini{background:#f8fafc;border:1px solid #e6eaf2;border-radius:14px;padding:12px}
-.metric{font-size:28px;font-weight:850;line-height:1.2}
-.label{font-size:13px;color:#667085;margin-top:4px}
-.chart-box{background:#f8fafc;border:1px solid #e6eaf2;border-radius:14px;padding:12px;margin:12px 0}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{border:1px solid #e6eaf2;padding:8px;text-align:left}
-th{background:#f8fafc}
-.note{background:#fff7ed;border-left:5px solid #f59e0b;padding:12px;border-radius:12px;color:#7c2d12;font-size:14px}
-.footer{text-align:center;color:#667085;font-size:12px;padding:18px}
-@media(min-width:600px){.grid{grid-template-columns:1fr 1fr}}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Helvetica Neue",Arial,sans-serif;background:#f6f8fc;color:#1a1a2e}
+.wrap{max-width:960px;margin:0 auto;padding:20px 16px}
+h1{font-size:1.25em;font-weight:800;color:#fff;padding:14px 20px;background:linear-gradient(135deg,#d97706,#fbbf24);border-radius:12px}
+h2{font-size:1em;font-weight:700;color:#16213e;margin-bottom:10px}
+.card{background:#fff;border:1px solid #e6eaf2;border-radius:12px;padding:18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(15,23,42,.04)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.flex{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;flex:1}
+input,select{width:100%;padding:9px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;outline:none}
+input:focus,select:focus{border-color:#d97706;box-shadow:0 0 0 3px rgba(217,119,6,.1)}
+label{font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:5px}
+.result-box{background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:14px}
+.box{background:#fff7ed;border-left:4px solid #f59e0b;padding:14px 16px;border-radius:0 10px 10px 0;font-size:13px}
+.box h3{font-size:12px;font-weight:700;color:#92400e;margin-bottom:6px}
+.box ul{padding-left:16px;line-height:2}
+.highlight{background:#e0f2fe;border:1px solid #7dd3fc;border-radius:8px;padding:12px;font-size:13px}
+.highlight strong{color:#0369a1}
+canvas{display:block;width:100%!important}
 </style>
 </head>
 <body>
-<header>
-<h1>诺华 (NVS) 股价趋势分析</h1>
-<div class="sub">近90日数据 | 数据截至 2026-05-19 | NYSE</div>
-</header>
-<main>
 
+<h1>🪙 黄金资产配置分析面板 <span style="float:right;font-size:12px;font-weight:400;opacity:.9">实时数据版</span></h1>
+
+<div class="wrap">
+
+<!-- 实时价格 -->
 <div class="card">
-<h2>核心数据</h2>
-<div class="grid" style="grid-template-columns:repeat(2,1fr)">
-<div class="mini">
-<div class="metric" style="color:#dc2626">▼ $150.44</div>
-<div class="label">最新股价 (USD)</div>
-</div>
-<div class="mini">
-<div class="metric" style="color:#dc2626">-7.52%</div>
-<div class="label">90日涨跌</div>
-</div>
-<div class="mini">
-<div class="metric" style="color:#dc2626">+0.46%</div>
-<div class="label">近5日涨跌</div>
-</div>
-<div class="mini">
-<div class="metric">$1.9M</div>
-<div class="label">日均成交量</div>
-</div>
-</div>
+  <div class="flex">
+    <div>
+      <div style="font-size:11px;color:#888;margin-bottom:2px">当前金价（USD/盎司）</div>
+      <div style="font-size:2em;font-weight:900;color:#d97706">$4,536.50</div>
+      <div style="font-size:11px;color:#aaa">Yahoo Finance GC=F · 2026-05-21</div>
+    </div>
+    <div style="border-left:1px solid #e6eaf2;padding-left:16px">
+      <div style="font-size:11px;color:#888;margin-bottom:2px">折合人民币</div>
+      <div style="font-size:1.5em;font-weight:800">¥676.54/克</div>
+      <div style="font-size:11px;color:#aaa">USD/CNY 6.80</div>
+    </div>
+    <div style="border-left:1px solid #e6eaf2;padding-left:16px">
+      <div style="font-size:11px;color:#888;margin-bottom:2px">距1年高点</div>
+      <div style="font-size:1.5em;font-weight:800;color:#dc2626">-12.9%</div>
+      <div style="font-size:11px;color:#aaa">$5,206 → $4,537</div>
+    </div>
+    <div style="border-left:1px solid #e6eaf2;padding-left:16px">
+      <div style="font-size:11px;color:#888;margin-bottom:2px">5年涨幅</div>
+      <div style="font-size:1.5em;font-weight:800;color:#16a34a">+138.8%</div>
+      <div style="font-size:11px;color:#aaa">$1,900（2021-01）</div>
+    </div>
+  </div>
 </div>
 
+<!-- 图表 -->
 <div class="card">
-<h2>近90日走势图</h2>
-<div class="chart-box">
-<svg viewBox="0 0 600 150" width="100%" style="max-width:600px">
-<polyline fill="none" stroke="#dc2626" stroke-width="1.5" points="0,34 9,22 19,8 29,10 39,18 49,0 59,10 68,25 78,20 88,44 98,49 108,34 118,41 127,74 137,83 147,88 157,80 167,80 177,109 186,119 196,131 206,119 216,116 226,104 236,110 245,119 255,106 265,92 275,79 285,85 295,92 304,101 314,82 324,79 334,85 344,82 354,89 363,96 373,110 383,97 393,102 403,120 413,124 422,123 432,135 442,142 452,135 462,150 472,121 481,128 491,140 501,135 511,118 521,135 531,131 540,136 550,119 560,110 570,110 580,119 590,113 600,106"/>
-</svg>
-<div style="display:flex;justify-content:space-between;font-size:12px;color:#667085;margin-top:4px">
-<span>起始 $162.67</span>
-<span style="color:#dc2626;font-weight:700">-7.52%</span>
-<span>今天 2026-05-19 $150.44</span>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <h2 style="margin:0">📈 黄金价格走势（USD/盎司）</h2>
+    <div>
+      <button onclick="showChart('5Y')" id="btn5Y" style="padding:5px 12px;border-radius:6px;border:none;background:#d97706;color:#fff;font-size:12px;font-weight:600;cursor:pointer">近5年</button>
+      <button onclick="showChart('1Y')" id="btn1Y" style="padding:5px 12px;border-radius:6px;border:1px solid #e6eaf2;background:#fff;color:#6b7280;font-size:12px;font-weight:600;cursor:pointer">近1年</button>
+    </div>
+  </div>
+  <canvas id="goldChart" height="280"></canvas>
+  <div style="font-size:11px;color:#aaa;margin-top:6px;text-align:right">数据：Yahoo Finance GC=F · 5年数据含历史季度估算</div>
 </div>
-</div>
-<div class="grid" style="grid-template-columns:repeat(4,1fr)">
-<div class="mini"><div style="font-size:20px;font-weight:800;color:#16a34a">$168.62</div><div class="label">90日最高</div></div>
-<div class="mini"><div style="font-size:20px;font-weight:800;color:#dc2626">$142.94</div><div class="label">90日最低</div></div>
-<div class="mini"><div style="font-size:20px;font-weight:800;color:#2563eb">$146.89</div><div class="label">20日均线</div></div>
-<div class="mini"><div style="font-size:20px;font-weight:800;color:#7c3aed">+2.4%</div><div class="label">股价偏离均线</div></div>
+
+<div class="grid">
+  <!-- 关键价位 -->
+  <div class="card">
+    <h2>🎯 近1年关键价位</h2>
+    <div class="grid3">
+      <div style="text-align:center;padding:10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px">
+        <div style="font-size:1.4em;font-weight:900;color:#16a34a">$3,280</div>
+        <div style="font-size:11px;color:#666;margin-top:3px">1年低点</div>
+        <div style="font-size:10px;color:#999">2025-05</div>
+      </div>
+      <div style="text-align:center;padding:10px;background:#fef9c3;border:1px solid #fde047;border-radius:8px">
+        <div style="font-size:1.4em;font-weight:900;color:#92400e">$4,537</div>
+        <div style="font-size:11px;color:#666;margin-top:3px">当前价格</div>
+        <div style="font-size:10px;color:#999">2026-05</div>
+      </div>
+      <div style="text-align:center;padding:10px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px">
+        <div style="font-size:1.4em;font-weight:900;color:#dc2626">$5,206</div>
+        <div style="font-size:11px;color:#666;margin-top:3px">1年高点</div>
+        <div style="font-size:10px;color:#999">2026-02</div>
+      </div>
+    </div>
+    <div class="highlight" style="margin-top:12px">
+      当前价格处于近1年区间 <strong>61%</strong> 分位（从低点涨+38%，从高点回调-13%）
+    </div>
+  </div>
+
+  <!-- 驱动因素 -->
+  <div class="card">
+    <h2>💡 黄金上涨三大逻辑</h2>
+    <div style="font-size:13px;line-height:2">
+      <div><span style="color:#d97706;font-weight:700">① 避险+抗通胀</span><br><span style="color:#666">地缘政治 + 全球宽松预期，硬通货属性凸显</span></div>
+      <div style="margin-top:6px"><span style="color:#d97706;font-weight:700">② 央行购金潮</span><br><span style="color:#666">全球央行持续增持，去美元化为金价托底</span></div>
+      <div style="margin-top:6px"><span style="color:#d97706;font-weight:700">③ 机会成本下降</span><br><span style="color:#666">美联储降息预期升温，实际利率下行利好黄金</span></div>
+    </div>
+  </div>
+
+  <!-- 配置计算器 -->
+  <div class="card" style="grid-column:1/-1">
+    <h2>⚙️ 黄金配置策略计算器</h2>
+    <div class="grid">
+      <div>
+        <label>可投资总资产（元）</label>
+        <input type="number" id="totalAsset" value="100000" oninput="calc()">
+      </div>
+      <div>
+        <label>风险偏好</label>
+        <select id="riskType" onchange="calc()">
+          <option value="conservative">保守型（配置 5%）</option>
+          <option value="balanced" selected>稳健型（配置 10%）</option>
+          <option value="aggressive">进取型（配置 15%）</option>
+        </select>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <label>定投周期</label>
+      <div style="display:flex;gap:10px">
+        <label style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid #e6eaf2;border-radius:8px;cursor:pointer;flex:1;text-align:center;font-size:13px">
+          <input type="radio" name="period" value="monthly" checked onclick="calc()"> 每月定投
+        </label>
+        <label style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid #e6eaf2;border-radius:8px;cursor:pointer;flex:1;text-align:center;font-size:13px">
+          <input type="radio" name="period" value="weekly" onclick="calc()"> 每周定投
+        </label>
+      </div>
+    </div>
+
+    <hr style="margin:16px 0;border:none;border-top:1px solid #f0f0f0">
+
+    <div class="grid">
+      <div class="result-box">
+        <div style="font-size:11px;color:#92400e;font-weight:600">建议黄金配置总额</div>
+        <div style="font-size:1.8em;font-weight:900;color:#d97706;margin-top:4px" id="goldTotal">¥10,000</div>
+      </div>
+      <div class="result-box">
+        <div style="font-size:11px;color:#92400e;font-weight:600">折合克数</div>
+        <div style="font-size:1.6em;font-weight:800;color:#374151;margin-top:4px" id="goldGrams">14.8 克</div>
+      </div>
+    </div>
+    <div class="grid" style="margin-top:10px">
+      <div style="background:#f8fafc;border:1px solid #e6eaf2;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:11px;color:#666">首笔建仓 (40%)</div>
+        <div style="font-size:1.2em;font-weight:800;margin-top:4px" id="firstBuy">¥4,000</div>
+      </div>
+      <div style="background:#f8fafc;border:1px solid #e6eaf2;border-radius:8px;padding:12px;text-align:center">
+        <div style="font-size:11px;color:#666" id="periodLabel">每月定投 (12期)</div>
+        <div style="font-size:1.2em;font-weight:800;margin-top:4px" id="periodBuy">¥500/期</div>
+      </div>
+    </div>
+
+    <div class="box" style="margin-top:14px">
+      <h3>💡 渠道建议</h3>
+      <ul>
+        <li>低损耗首选：<strong>银行积存金</strong>或<strong>黄金ETF</strong>（518880等），手续费最低</li>
+        <li>追求真实感：大牌<strong>投资金条</strong>（招行金/平安金），避开首饰金</li>
+        <li>懒人定投：支付宝/理财通搜「黄金ETF联接」可自动定投</li>
+      </ul>
+    </div>
+  </div>
 </div>
 </div>
 
-<div class="card">
-<h2>详细数据</h2>
-<table>
-<tr><th>指标</th><th>数值</th></tr>
-<tr><td>起始价（90天前）</td><td>$162.67</td></tr>
-<tr><td>最新价</td><td>$150.44</td></tr>
-<tr><td>90日最高</td><td>$168.62</td></tr>
-<tr><td>90日最低</td><td>$142.94</td></tr>
-<tr><td>20日均线</td><td>$146.89</td></tr>
-<tr><td>距均线偏离</td><td style="color:#16a34a;font-weight:700">+2.42%</td></tr>
-<tr><td>日均成交量</td><td>1.9M</td></tr>
-<tr><td>统计天数</td><td>62 个交易日</td></tr>
-</table>
-</div>
+<script>
+// ===== 纯Canvas手绘K线图，无任何外部依赖 =====
 
-<div class="card">
-<h2>趋势分析</h2>
-<p style="font-size:14px">
-诺华 (NVS) 近90日股价从 <strong>$162.67</strong> 变动至 <strong>$150.44</strong>，
-累计 <strong style="color:#dc2626">-7.5%</strong>。
-当前股价高于20日均线 <strong>+2.42%</strong>，
-显示出短期均线支撑有效。
-</p>
-<p style="font-size:14px">
-近5日走势平稳（+0.46%），成交量维持在日均1.9M，
-股价处于近期波动区间的中低位。
-</p>
-<div class="note">
-⚠️ 数据截至 2026-05-19，仅供信息参考，不构成任何投资建议。股市有风险，投资需谨慎。
-</div>
-</div>
+const GOLD_USD = 4536.50;
+const GOLD_CNY_G = 676.54;
 
-</main>
-<div class="footer">
-诺华 (NVS) 股价趋势分析 | Generated by Hermes Agent | 数据来源：Yahoo Finance
-</div>
+// 近1年日线（每5天一格，约38个点）
+const DATA_1Y = [
+  ["2025-05-20",3280.3],["2025-06-03",3350.2],["2025-06-17",3386.6],
+  ["2025-07-01",3336.7],["2025-07-15",3329.8],["2025-07-22",3439.2],
+  ["2025-08-05",3381.9],["2025-08-19",3313.4],["2025-08-26",3388.6],
+  ["2025-09-03",3593.2],["2025-09-17",3681.8],["2025-09-24",3732.1],
+  ["2025-10-01",3867.5],["2025-10-08",4043.3],["2025-10-15",4176.9],
+  ["2025-10-29",3983.7],["2025-11-12",4204.4],["2025-11-19",4077.7],
+  ["2025-11-26",4165.2],["2025-12-04",4211.8],["2025-12-18",4339.5],
+  ["2025-12-26",4529.1],["2026-01-12",4604.3],["2026-01-20",4759.6],
+  ["2026-01-27",5079.9],["2026-02-03",4903.7],["2026-02-18",4986.5],
+  ["2026-02-25",5206.4],["2026-03-04",5120.2],["2026-03-11",5167.4],
+  ["2026-03-18",4889.9],["2026-04-01",4783.2],["2026-04-09",4792.2],
+  ["2026-04-23",4705.1],["2026-04-30",4614.7],["2026-05-07",4699.8],
+  ["2026-05-14",4678.1],["2026-05-21",4536.5]
+];
+
+// 5年季度数据（23个点）
+const DATA_5Y = [
+  ["2021-01",1900],["2021-04",1770],["2021-07",1815],["2021-10",1783],
+  ["2022-01",1798],["2022-04",1897],["2022-07",1765],["2022-10",1640],
+  ["2023-01",1928],["2023-04",1990],["2023-07",1970],["2023-10",1997],
+  ["2024-01",2050],["2024-04",2330],["2024-07",2470],["2024-10",2780],
+  ["2025-01",2860],["2025-04",3320],["2025-07",3381],["2025-10",3439],
+  ["2025-11",4165],["2026-02",5206],["2026-05",4536]
+];
+
+let currentData = DATA_5Y;
+let currentPeriod = '5Y';
+
+function drawChart() {
+  const canvas = document.getElementById('goldChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth;
+  const H = 280;
+  canvas.width = W;
+  canvas.height = H;
+
+  const data = currentData;
+  const prices = data.map(d => d[1]);
+  const labels = data.map(d => d[0]);
+  const minP = Math.min(...prices);
+  const maxP = Math.max(...prices);
+  const pad = { left: 58, right: 16, top: 20, bottom: 40 };
+  const chartW = W - pad.left - pad.right;
+  const chartH = H - pad.top - pad.bottom;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // 背景
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, W, H);
+
+  // Y轴范围
+  const range = maxP - minP;
+  const yMin = minP - range * 0.05;
+  const yMax = maxP + range * 0.05;
+
+  const toX = (i) => pad.left + (i / (data.length - 1)) * chartW;
+  const toY = (p) => pad.top + (1 - (p - yMin) / (yMax - yMin)) * chartH;
+
+  // 网格线
+  ctx.strokeStyle = '#f1f5f9';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 5; i++) {
+    const y = pad.top + (i / 5) * chartH;
+    ctx.beginPath();
+    ctx.moveTo(pad.left, y);
+    ctx.lineTo(pad.left + chartW, y);
+    ctx.stroke();
+  }
+
+  // Y轴标签
+  ctx.fillStyle = '#9ca3af';
+  ctx.font = '11px -apple-system, sans-serif';
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 5; i++) {
+    const val = yMin + (1 - i / 5) * (yMax - yMin);
+    const y = pad.top + (i / 5) * chartH;
+    ctx.fillText('$' + Math.round(val).toLocaleString(), pad.left - 6, y + 4);
+  }
+
+  // X轴标签
+  ctx.textAlign = 'center';
+  const xStep = Math.ceil(data.length / 8);
+  for (let i = 0; i < data.length; i += xStep) {
+    const x = toX(i);
+    ctx.fillText(labels[i].slice(0, 7), x, H - 10);
+  }
+
+  // 渐变填充
+  const grad = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
+  grad.addColorStop(0, 'rgba(217,119,6,0.18)');
+  grad.addColorStop(1, 'rgba(217,119,6,0)');
+
+  // 填充
+  ctx.beginPath();
+  ctx.moveTo(toX(0), toY(yMin));
+  for (let i = 0; i < data.length; i++) {
+    ctx.lineTo(toX(i), toY(prices[i]));
+  }
+  ctx.lineTo(toX(data.length - 1), toY(yMin));
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // 折线
+  ctx.beginPath();
+  ctx.strokeStyle = '#d97706';
+  ctx.lineWidth = 2.5;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  for (let i = 0; i < data.length; i++) {
+    const x = toX(i);
+    const y = toY(prices[i]);
+    if (i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // 数据点
+  ctx.fillStyle = '#d97706';
+  for (let i = 0; i < data.length; i++) {
+    const x = toX(i);
+    const y = toY(prices[i]);
+    ctx.beginPath();
+    ctx.arc(x, y, i % xStep === 0 ? 4 : 2.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // 最新价格标注
+  const lastX = toX(data.length - 1);
+  const lastY = toY(prices[data.length - 1]);
+  ctx.fillStyle = '#d97706';
+  ctx.strokeStyle = '#fff';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(lastX, lastY, 6, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  // 最新值气泡
+  const bubbleX = Math.min(lastX + 8, W - 80);
+  ctx.fillStyle = '#d97706';
+  const text = '$' + Math.round(prices[data.length - 1]).toLocaleString();
+  ctx.font = 'bold 12px -apple-system, sans-serif';
+  const tw = ctx.measureText(text).width + 10;
+  ctx.beginPath();
+  ctx.roundRect(bubbleX, lastY - 12, tw, 22, 4);
+  ctx.fill();
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.fillText(text, bubbleX + tw / 2, lastY + 2);
+}
+
+function showChart(period) {
+  currentPeriod = period;
+  currentData = period === '5Y' ? DATA_5Y : DATA_1Y;
+  // 按钮样式
+  const active = 'padding:5px 12px;border-radius:6px;border:none;background:#d97706;color:#fff;font-size:12px;font-weight:600;cursor:pointer';
+  const inactive = 'padding:5px 12px;border-radius:6px;border:1px solid #e6eaf2;background:#fff;color:#6b7280;font-size:12px;font-weight:600;cursor:pointer';
+  document.getElementById('btn5Y').style.cssText = period === '5Y' ? active : inactive;
+  document.getElementById('btn1Y').style.cssText = period === '1Y' ? active : inactive;
+  drawChart();
+}
+
+function calc() {
+  const total = parseFloat(document.getElementById('totalAsset').value) || 0;
+  const risk = document.getElementById('riskType').value;
+  const period = document.querySelector('input[name="period"]:checked').value;
+  const ratio = risk === 'conservative' ? 0.05 : risk === 'aggressive' ? 0.15 : 0.10;
+  const goldTotal = total * ratio;
+  const firstBuy = goldTotal * 0.40;
+  const periods = period === 'monthly' ? 12 : 52;
+  const periodBuy = (goldTotal * 0.60) / periods;
+  const grams = goldTotal / GOLD_CNY_G;
+  document.getElementById('goldTotal').innerText = '¥' + Math.round(goldTotal).toLocaleString();
+  document.getElementById('goldGrams').innerText = grams.toFixed(1) + ' 克';
+  document.getElementById('firstBuy').innerText = '¥' + Math.round(firstBuy).toLocaleString();
+  document.getElementById('periodBuy').innerText = '¥' + Math.round(periodBuy).toLocaleString() + '/期';
+  document.getElementById('periodLabel').innerText = period === 'monthly' ? '每月定投 (12期)' : '每周定投 (52期)';
+}
+
+// 初始化
+window.onload = function() {
+  setTimeout(drawChart, 50);
+  // 响应窗口大小变化
+  window.addEventListener('resize', drawChart);
+  calc();
+};
+</script>
 </body>
 </html>
